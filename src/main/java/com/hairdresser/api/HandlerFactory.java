@@ -17,6 +17,8 @@ public class HandlerFactory {
                 return new VisitsHandler();
             case "visitors":
                 return new VisitorsHandler();
+            case "reports":
+                return new ReportsHandler();
             default:
                 throw new IllegalArgumentException("Неизвестная сущность: " + entity);
         }
