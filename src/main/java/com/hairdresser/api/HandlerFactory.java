@@ -19,6 +19,10 @@ public class HandlerFactory {
                 return new VisitorsHandler();
             case "reports":
                 return new ReportsHandler();
+            case "register":
+                return new RegisterHandler();
+            case "login":
+                return new LoginHandler();
             default:
                 throw new IllegalArgumentException("Неизвестная сущность: " + entity);
         }

@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="85f55a58-5b3f-4611-aea0-3dff7f1dcbf2" name="Changes" comment="Добавление плагина для сборки">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/2e4adb94-619f-4a5b-8ba9-6fefe2e9c272.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/2e4adb94-619f-4a5b-8ba9-6fefe2e9c272.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/LoginHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/RegisterHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hairdresser_db.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/hairdresser_db.mv.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hairdresser_db.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/hairdresser_db.trace.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/HairdresserRestServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/HairdresserRestServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/VisitsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/VisitsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/HandlerFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hairdresser/api/HandlerFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +111,7 @@
       <workItem from="1746423204950" duration="57000" />
       <workItem from="1747914661757" duration="12373000" />
       <workItem from="1747985348252" duration="1090000" />
-      <workItem from="1747986594658" duration="8217000" />
+      <workItem from="1747986594658" duration="11978000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />

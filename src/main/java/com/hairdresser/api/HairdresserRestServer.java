@@ -52,6 +52,14 @@ public class HairdresserRestServer {
             logRequest(exchange);
             factory.createHandler("reports").handle(exchange);
         });
+        server.createContext("/api/login", exchange -> {
+            //logRequest(exchange);
+            new LoginHandler().handle(exchange);
+        });
+        server.createContext("/api/register", exchange -> {
+            //logRequest(exchange);
+            new RegisterHandler().handle(exchange);
+        });
 
         // Запуск сервера
         server.start();
