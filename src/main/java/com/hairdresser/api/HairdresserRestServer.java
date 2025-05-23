@@ -41,7 +41,7 @@ public class HairdresserRestServer {
             factory.createHandler("shifts").handle(exchange);
         });
         server.createContext("/api/visits", exchange -> {
-            logRequest(exchange);
+            // logRequest(exchange);
             factory.createHandler("visits").handle(exchange);
         });
         server.createContext("/api/visitors", exchange -> {

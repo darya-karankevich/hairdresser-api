@@ -29,15 +29,40 @@ public class VisitsHandler implements EntityHandler {
 
     @Override
     public void handleGet(HttpExchange exchange, Connection conn) throws SQLException, IOException {
-        String query = "SELECT v.visit_id, v.visitor_id, vi.full_name AS visitor_name, " +
-                "v.service_type_id, st.service_name, v.user_id, u.username AS master_name, " +
-                "v.shift_id, s.shift_hours, v.visit_date " +
-                "FROM Visits v " +
-                "JOIN Visitors vi ON v.visitor_id = vi.visitor_id " +
-                "JOIN ServiceTypes st ON v.service_type_id = st.service_type_id " +
-                "JOIN Users u ON v.user_id = u.user_id " +
-                "JOIN Shifts s ON v.shift_id = s.shift_id";
+
+        String query;
+
+
+        String userIdStr = exchange.getRequestURI().getQuery() != null ?
+                exchange.getRequestURI().getQuery().replace("user_id=", "") : "0";
+
+        if(userIdStr.equals("0")) {
+            query = "SELECT v.visit_id, v.visitor_id, vi.full_name AS visitor_name, " +
+                    "v.service_type_id, st.service_name, v.user_id, u.username AS master_name, " +
+                    "v.shift_id, s.shift_hours, v.visit_date " +
+                    "FROM Visits v " +
+                    "JOIN Visitors vi ON v.visitor_id = vi.visitor_id " +
+                    "JOIN ServiceTypes st ON v.service_type_id = st.service_type_id " +
+                    "JOIN Users u ON v.user_id = u.user_id " +
+                    "JOIN Shifts s ON v.shift_id = s.shift_id";
+        }
+        else {
+            query = "SELECT v.visit_id, v.visitor_id, vi.full_name AS visitor_name, " +
+                    "v.service_type_id, st.service_name, v.user_id, u.username AS master_name, " +
+                    "v.shift_id, s.shift_hours, v.visit_date " +
+                    "FROM Visits v " +
+
+                    "JOIN Visitors vi ON v.visitor_id = vi.visitor_id " +
+                    "JOIN ServiceTypes st ON v.service_type_id = st.service_type_id " +
+                    "JOIN Users u ON v.user_id = u.user_id " +
+                    "JOIN Shifts s ON v.shift_id = s.shift_id " +
+                    "WHERE  u.user_id = ? ";
+
+        }
         PreparedStatement stmt = conn.prepareStatement(query);
+        if (userIdStr.equals("0") == false) {
+            stmt.setInt(1, Integer.parseInt(userIdStr));
+        }
         ResultSet rs = stmt.executeQuery();
         JSONArray visits = new JSONArray();
         while (rs.next()) {
@@ -60,6 +85,7 @@ public class VisitsHandler implements EntityHandler {
     @Override
     public void handlePost(HttpExchange exchange, Connection conn) throws SQLException, IOException {
         String requestBody = HairdresserRestServer.readRequestBody(exchange);
+        System.out.println("POST /api/visits received: " + requestBody); // Логирование запроса
         try {
             JSONObject json = new JSONObject(requestBody);
             String query = "INSERT INTO Visits (visitor_id, service_type_id, user_id, shift_id, visit_date) " +
@@ -70,7 +96,8 @@ public class VisitsHandler implements EntityHandler {
             stmt.setInt(3, json.getInt("user_id"));
             stmt.setInt(4, json.getInt("shift_id"));
             stmt.setString(5, json.getString("visit_date"));
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected); // Логирование результата
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 JSONObject response = new JSONObject();
@@ -82,9 +109,14 @@ public class VisitsHandler implements EntityHandler {
                 response.put("visit_date", json.getString("visit_date"));
                 HairdresserRestServer.sendResponse(exchange, 201, response.toString());
             } else {
+                System.err.println("Failed to create visit: No generated keys");
                 HairdresserRestServer.sendResponse(exchange, 500, "{\"error\": \"Не удалось создать визит\"}");
             }
+        } catch (SQLException e) {
+            System.err.println("SQLException in handlePost: " + e.getMessage());
+            HairdresserRestServer.sendResponse(exchange, 400, "{\"error\": \"Ошибка базы данных: " + e.getMessage() + "\"}");
         } catch (Exception e) {
+            System.err.println("Exception in handlePost: " + e.getMessage());
             HairdresserRestServer.sendResponse(exchange, 400, "{\"error\": \"" + e.getMessage() + "\"}");
         }
     }
